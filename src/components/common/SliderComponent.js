@@ -1,24 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Slider from '@mui/material/Slider';
 import { Stack, Typography, TextField } from '@mui/material';
 
-const SliderComponent = (props) => {
-    const [value, setValue] = useState(props.defaultValue || 0);
+const SliderComponent = ({ title, value, onChange, min, max, step, defaultValue }) => {
 
     const handleSliderChange = (event, newValue) => {
-        setValue(newValue);
+        onChange(event, newValue);  
     };
 
     const handleInputChange = (event) => {
         const newValue = event.target.value;
-
-        if (!isNaN(newValue) && newValue >= props.min && newValue <= props.max) {
-            setValue(Number(newValue));
+        if (!isNaN(newValue) && newValue >= min && newValue <= max) {
+            onChange(event, Number(newValue));  
         }
     };
 
     const getPrefix = () => {
-        if (props.title === "Interest Rate") {
+        if (title === "Interest Rate") {
           return '%';
         }
         return '$';
@@ -27,7 +25,7 @@ const SliderComponent = (props) => {
     return (
         <>
             <Stack gap={1}>
-                <Typography variant='subtitle2'>{props.title}</Typography>
+                <Typography variant='subtitle2'>{title}</Typography>
                 <Stack direction="row" spacing={2}>
                     <Typography variant='h5' sx={{ flex: 1 }}>
                         {getPrefix()}{value}
@@ -35,7 +33,7 @@ const SliderComponent = (props) => {
                     <TextField
                         label="Enter Value"
                         variant="outlined"
-                        value={value}
+                        value={value}  
                         onChange={handleInputChange}
                         type="number"
                         sx={{ flex: 1 }}
@@ -44,14 +42,14 @@ const SliderComponent = (props) => {
             </Stack>
 
             <Slider
-                value={value}
-                min={props.min}
-                max={props.max}
-                step={props.step}
+                value={value}  
+                min={min}
+                max={max}
+                step={step}
                 onChange={handleSliderChange}
                 valueLabelDisplay="auto"
                 marks
-                aria-label="Home Value"
+                aria-label={title}
             />
         </>
     )
